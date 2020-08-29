@@ -12,8 +12,13 @@ public class NBody{
 		int first = in.readInt();
 		double second = in.readDouble();
 		for(int i=0; i<planets.length; i++){
-			Body b = new Body(in.readDouble(), in.readDouble(), in.readDouble(), 
-				in.readDouble(), in.readDouble(),in.readString());
+			double xP = in.readDouble();
+			double yP = in.readDouble();
+			double xV = in.readDouble();
+			double yV = in.readDouble();
+			double m = in.readDouble();
+			String im = in.readString();
+			Body b = new Body(xP, yP, xV, yV, m, im);
 			planets[i] = b;
 		}
 		return planets;
