@@ -29,7 +29,7 @@ public class NBody{
 		
 		StdDraw.enableDoubleBuffering();
 		StdDraw.setScale(-radius,radius);
-		while(time<T){
+		while(time<=T){
 			double[] xForces = new double[planets.length];
 			double[] yForces = new double[planets.length];
 			for(int i=0; i<planets.length; i++){
@@ -38,7 +38,7 @@ public class NBody{
 			}
 			for(int i=0; i<planets.length; i++){
 				planets[i].update(time, xForces[i], yForces[i]);
-			}
+			}	
 			StdDraw.clear();
 			StdDraw.picture(0, 0, "images/starfield.jpg");
 			for(int i=0; i<planets.length; i++){
