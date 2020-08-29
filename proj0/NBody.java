@@ -6,7 +6,7 @@ public class NBody{
 		return in.readDouble();
 	}
 
-	public static Body[] readbodies(String s){
+	public static Body[] readBodies(String s){
 		In in = new In(s);
 		Body[] planets = new Body[5];
 		int first = in.readInt();
@@ -24,7 +24,7 @@ public class NBody{
 		double dt = Double.parseDouble(args[1]);
 		String filename = args[2];
 		double radius = readRadius(filename);
-		Body[] planets = readbodies(filename);
+		Body[] planets = readBodies(filename);
 		double time = 0;
 		
 		StdDraw.enableDoubleBuffering();
