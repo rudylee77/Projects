@@ -8,17 +8,12 @@ public class NBody{
 
 	public static Body[] readBodies(String s){
 		In in = new In(s);
-		Body[] planets = new Body[5];
 		int first = in.readInt();
+		Body[] planets = new Body[first];
 		double second = in.readDouble();
 		for(int i=0; i<planets.length; i++){
-			double xP = in.readDouble();
-			double yP = in.readDouble();
-			double xV = in.readDouble();
-			double yV = in.readDouble();
-			double m = in.readDouble();
-			String im = in.readString();
-			Body b = new Body(xP, yP, xV, yV, m, im);
+			Body b = new Body(in.readDouble(), in.readDouble(), in.readDouble(), 
+				in.readDouble(), in.readDouble(), in.readString());
 			planets[i] = b;
 		}
 		return planets;
