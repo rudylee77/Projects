@@ -6,7 +6,7 @@ public class NBody{
 		return in.readDouble();
 	}
 
-	public static Body[] readBodies(String s){
+	public static Body[] readbodies(String s){
 		In in = new In(s);
 		Body[] planets = new Body[5];
 		int first = in.readInt();
@@ -24,7 +24,7 @@ public class NBody{
 		double dt = Double.parseDouble(args[1]);
 		String filename = args[2];
 		double radius = readRadius(filename);
-		Body[] planets = readBodies(filename);
+		Body[] planets = readbodies(filename);
 		double time = 0;
 		
 		StdDraw.enableDoubleBuffering();
@@ -47,6 +47,13 @@ public class NBody{
 			StdDraw.show();
 			StdDraw.pause(10);
 			time += dt;
+		}
+		StdOut.printf("%d\n", planets.length);
+		StdOut.printf("%.2e\n", radius);
+		for (int i = 0; i < planets.length; i++) {
+    		StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                  planets[i].xxPos, planets[i].yyPos, planets[i].xxVel,
+                  planets[i].yyVel, planets[i].mass, planets[i].imgFileName);   
 		}
 	}
 }
