@@ -65,7 +65,6 @@ public class ArrayDeque<T> {
         T element = array[prev];
         array[prev] = null;
         size -= 1;
-
         if (array.length >= 16 && size < (array.length / 4)) {
             resize(array.length / 2);
         }
@@ -80,7 +79,6 @@ public class ArrayDeque<T> {
         T element = array[next];
         array[next] = null;
         size -= 1;
-
         if (array.length >= 16 && size < (array.length / 4)) {
             resize(array.length / 2);
         }
