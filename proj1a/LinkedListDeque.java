@@ -21,13 +21,13 @@ public class LinkedListDeque<T> {
     }
 
     public void addFirst(T item) {
-        sentinel.prev = new TList(sentinel, item, sentinel.prev);
+        sentinel.prev = new TList(sentinel.prev, item, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
         size += 1;
     }
 
     public void addLast(T item) {
-        sentinel.next.prev = new TList(sentinel.next, item, sentinel);
+        sentinel.next.prev = new TList(sentinel, item, sentinel.next);
         sentinel.next = sentinel.next.prev;
         size += 1;
     }
