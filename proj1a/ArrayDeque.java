@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
             resize(array.length * 2);
         }
         array[prev] = item;
-        prev = (prev - 1 + array.length) % array.length;
+        prev -= 1;
         size += 1;
     }
 
@@ -57,7 +57,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (array.length >= 16 & size < (array.length / 4)) {
+        if (array.length >= 16) {
             resize(array.length / 2);
         }
         prev = (prev + 1) % array.length;
@@ -71,10 +71,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if (array.length >= 16 & size < (array.length / 4)) {
+        if (array.length >= 16) {
             resize(array.length / 2);
         }
-        next = (next - 1 + array.length) % array.length;
+        next -= 1;
         T element = array[next];
         array[next] = null;
         size -= 1;
