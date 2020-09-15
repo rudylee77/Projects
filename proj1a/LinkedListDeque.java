@@ -1,6 +1,6 @@
 public class LinkedListDeque<T> {
     private TList sentinel;
-    private int size;
+    private int size = 0;
 
     public class TList {
         public TList prev;
@@ -15,7 +15,6 @@ public class LinkedListDeque<T> {
     }
 
     public LinkedListDeque() {
-        size = 0;
         sentinel = new TList(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
