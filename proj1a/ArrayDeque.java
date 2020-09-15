@@ -11,7 +11,7 @@ public class ArrayDeque<T> {
         next = 1;
     }
 
-    public void resize(int i) {
+    private void resize(int i) {
         int index = (prev + 1) % array.length;
         T[] newArray = (T[]) new Object[i];
         for (int j = 0; j < size; j++) {
@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
             resize(array.length * 2);
         }
         array[prev] = item;
-        prev -= 1;
+        prev = (prev - 1 + array.length) % array.length;
         size += 1;
     }
 
@@ -57,7 +57,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (array.length >= 16) {
+        if (array.length >= 16 & size < (array.length / 4)) {
             resize(array.length / 2);
         }
         prev = (prev + 1) % array.length;
@@ -71,10 +71,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if (array.length >= 16) {
+        if (array.length >= 16 & size < (array.length / 4)) {
             resize(array.length / 2);
         }
-        next -= 1;
+        next = (next - 1 + array.length) % array.length;
         T element = array[next];
         array[next] = null;
         size -= 1;
