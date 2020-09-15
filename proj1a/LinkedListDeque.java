@@ -7,10 +7,10 @@ public class LinkedListDeque<T> {
         public T item;
         public TList next;
 
-        public TList(TList prev, T item, TList next) {
-            this.prev = prev;
-            this.item = item;
-            this.next = next;
+        public TList(TList p, T i, TList n) {
+            prev = p;
+            item = i;
+            next = n;
         }
     }
 
