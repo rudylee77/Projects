@@ -58,7 +58,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (isEmpty()) {
+        if (size == 0) {
             return null;
         }
         prev = (prev + 1) % array.length;;
@@ -72,7 +72,7 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        if (isEmpty()) {
+        if (size == 0) {
             return null;
         }
         next = (next - 1 + array.length) % array.length;
@@ -88,8 +88,6 @@ public class ArrayDeque<T> {
     public T get(int index) {
         if (index > size) {
             return null;
-        } else {
-            return array[(((prev + 1) % array.length) + index) % array.length];
-        }
+        return array[(((prev + 1) % array.length) + index) % array.length];
     }
 }
