@@ -7,8 +7,8 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         array = (T[]) new Object[8];
         size = 0;
-        prev = 0;
-        next = 1;
+        prev = 4;
+        next = 5;
     }
 
     private void resize(int i) {
@@ -57,35 +57,35 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (array.length >= 16 & size < (array.length / 4)) {
-            resize(array.length / 2);
+        if (size == 0) {
+            return null;
         }
         prev = (prev + 1) % array.length;
         T element = array[prev];
         array[prev] = null;
         size -= 1;
-        if (size > 0) {
-            size -= 1;
+        if (array.length >= 16 && size < (array.length / 4)) {
+            resize(array.length/2);
         }
         return element;
     }
 
     public T removeLast() {
-        if (array.length >= 16 & size < (array.length / 4)) {
-            resize(array.length / 2);
+        if (size == 0) {
+            return null;
         }
         next = (next - 1 + array.length) % array.length;
         T element = array[next];
         array[next] = null;
         size -= 1;
-        if (size > 0) {
-            size -= 1;
+        if (array.length >= 16 && size < (array.length / 4)) {
+            resize(array.length / 2);
         }
         return element;
     }
 
     public T get(int index) {
-        if (index < 0 | index >= size) {
+        if (size < index) {
             return null;
         }
         int count = (prev + 1) % array.length;
