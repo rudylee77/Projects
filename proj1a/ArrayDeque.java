@@ -8,19 +8,37 @@ public class ArrayDeque<T> {
         array = (T[]) new Object[8];
         size = 0;
         prev = 0;
-        next = 8;
+        next = 1;
+    }
+
+    public void resize(int i) {
+        int index = (prev + 1) % array.length;
+        T[] newArray = (T[]) new Object[i];
+        for (int j = 0; j < size; j++) {
+            newArray[j] = array[index];
+            index = (index + 1) % array.length;
+        }
+        prev = i - 1;
+        next = size;
+        array = newArray;
     }
 
     public void addFirst(T item) {
-        prev = (prev - 1 + array.length) % array.length;
+        if (size == array.length) {
+            resize(array.length * 2);
+        }
         array[prev] = item;
+        prev = (prev - 1 + array.length) % array.length;
         size += 1;
     }
 
     public void addLast(T item) {
-        next = next % array.length;
+        if (size == array.length) {
+            resize(array.length * 2);
+        }
         array[next] = item;
-        size += 1;
+        next = (next + 1) % array.length;
+        size -= 1;
     }
 
     public boolean isEmpty() {
@@ -35,37 +53,42 @@ public class ArrayDeque<T> {
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i] + " ");
         }
+        System.out.println();
     }
 
     public T removeFirst() {
-        if (size == 0) {
-            return null;
+        if (array.length >= 16 & size < (array.length / 4)) {
+            resize(array.length / 2);
         }
-        T element = array[prev];
         prev = (prev + 1) % array.length;
+        T element = array[prev];
+        array[prev] = null;
         size -= 1;
+        if (size > 0) {
+            size -= 1;
+        }
         return element;
     }
 
     public T removeLast() {
-        if (size == 0) {
-            return null;
+        if (array.length >= 16 & size < (array.length / 4)) {
+            resize(array.length / 2);
         }
-        T element = array[next];
         next = (next - 1 + array.length) % array.length;
+        T element = array[next];
+        array[next] = null;
         size -= 1;
+        if (size > 0) {
+            size -= 1;
+        }
         return element;
     }
 
     public T get(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 | index >= size) {
             return null;
         }
-        int count = prev + 1;
-        while (index > 0) {
-            count += 1;
-            index -= 1;
-        }
-        return array[count % array.length];
+        int count = (prev + 1) % array.length;
+        return array[(count + index) % array.length];
     }
 }
