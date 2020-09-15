@@ -11,12 +11,13 @@ public class ArrayDeque<T> {
         next = 5;
     }
 
+
     private void resize(int i) {
-        int index = (prev + 1) % array.length;
+        int count = (prev + 1) % array.length;;
         T[] newArray = (T[]) new Object[i];
         for (int j = 0; j < size; j++) {
-            newArray[j] = array[index];
-            index = (index + 1) % array.length;
+            newArray[j] = array[count];
+            count = (count + 1) % array.length;;
         }
         prev = i - 1;
         next = size;
@@ -28,8 +29,8 @@ public class ArrayDeque<T> {
             resize(array.length * 2);
         }
         array[prev] = item;
-        prev = (prev - 1 + array.length) % array.length;
         size += 1;
+        prev = (prev - 1 + array.length) % array.length;
     }
 
     public void addLast(T item) {
@@ -37,8 +38,8 @@ public class ArrayDeque<T> {
             resize(array.length * 2);
         }
         array[next] = item;
-        next = (next + 1) % array.length;
-        size -= 1;
+        size += 1;
+        next = (next + 1) % array.length;;
     }
 
     public boolean isEmpty() {
@@ -57,27 +58,29 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
-        prev = (prev + 1) % array.length;
+        prev = (prev + 1) % array.length;;
         T element = array[prev];
         array[prev] = null;
         size -= 1;
+
         if (array.length >= 16 && size < (array.length / 4)) {
-            resize(array.length/2);
+            resize(array.length / 2);
         }
         return element;
     }
 
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
         next = (next - 1 + array.length) % array.length;
         T element = array[next];
         array[next] = null;
         size -= 1;
+
         if (array.length >= 16 && size < (array.length / 4)) {
             resize(array.length / 2);
         }
@@ -85,10 +88,10 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        if (size < index) {
+        if (index > size) {
             return null;
+        } else {
+            return array[(((prev + 1) % array.length) + index) % array.length];
         }
-        int count = (prev + 1) % array.length;
-        return array[(count + index) % array.length];
     }
 }
