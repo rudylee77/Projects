@@ -3,9 +3,9 @@ public class LinkedListDeque<T> {
     private int size = 0;
 
     public class TList {
-        public TList prev;
-        public T item;
-        public TList next;
+        private TList prev;
+        private T item;
+        private TList next;
 
         public TList(TList p, T i, TList n) {
             prev = p;

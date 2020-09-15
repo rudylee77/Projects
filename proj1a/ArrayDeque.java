@@ -14,12 +14,10 @@ public class ArrayDeque<T> {
 
     private void resize(int i) {
         int count = (prev + 1) % array.length;
-        ;
         T[] newArray = (T[]) new Object[i];
         for (int j = 0; j < size; j++) {
             newArray[j] = array[count];
             count = (count + 1) % array.length;
-            ;
         }
         prev = i - 1;
         next = size;
@@ -42,7 +40,6 @@ public class ArrayDeque<T> {
         array[next] = item;
         size += 1;
         next = (next + 1) % array.length;
-        ;
     }
 
     public boolean isEmpty() {
@@ -65,7 +62,6 @@ public class ArrayDeque<T> {
             return null;
         }
         prev = (prev + 1) % array.length;
-        ;
         T element = array[prev];
         array[prev] = null;
         size -= 1;
@@ -96,4 +92,3 @@ public class ArrayDeque<T> {
         return array[(((prev + 1) % array.length) + index) % array.length];
     }
 }
-
