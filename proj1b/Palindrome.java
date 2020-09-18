@@ -35,11 +35,10 @@ public class Palindrome {
             return true;
         }
         Deque<Character> d = wordToDeque(word);
-        CharacterComparator offByOne = new OffByOne();
         for (int i = 0; i < word.length() / 2; i++) {
             Character first = d.removeFirst();
             Character last = d.removeLast();
-            if (!(offByOne.equalChars(first, last))) {
+            if (!(cc.equalChars(first, last))) {
                 return false;
             }
         }
