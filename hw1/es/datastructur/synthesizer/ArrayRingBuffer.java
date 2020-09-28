@@ -3,13 +3,8 @@ import java.util.Iterator;
 
 public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     private class ArrayRingBufferIterator implements Iterator<T> {
-        private int position;
+        public ArrayRingBufferIterator() { }
 
-        public ArrayRingBufferIterator() {
-            position = 0;
-        }
-
-        @Override
         public boolean hasNext() {
             return fillCount < rb.length;
         }
@@ -99,8 +94,7 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        ArrayRingBuffer<T> ring = new ArrayRingBuffer(capacity());
-        return ring.iterator();
+        return new ArrayRingBufferIterator();
     }
 
     @Override
