@@ -47,7 +47,7 @@ public class Percolation {
         }
     }
 
-    private boolean backwash(int c){
+    private boolean backwash(int c) {
         if (isFull(N - 2, c)) {
             return true;
         }
@@ -81,6 +81,8 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
+        } else if (openSites == 0) {
+            return false;
         }
         return weight.connected(top, xyTo1D(row, col));
     }
