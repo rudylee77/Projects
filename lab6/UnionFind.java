@@ -50,7 +50,7 @@ public class UnionFind {
         validate(v1);
         validate(v2);
         if (isConnected(v1, v2) && find(v1) != find(v2)) {
-            if (sizeOf(v1) < sizeOf(v2)) {
+            if (sizeOf(v1) > sizeOf(v2)) {
                 parent[find(v1)] = find(v2);
             } else {
                 parent[find(v2)] = find(v1);
