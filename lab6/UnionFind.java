@@ -15,7 +15,7 @@ public class UnionFind {
 
     /* Throws an exception if v1 is not a valid vertex. */
     private void validate(int v1) {
-        if (parent.length <= v1 || v1 < 0) {
+        if (parent.length <= v1) {
             throw new IllegalArgumentException();
         }
     }
@@ -49,14 +49,10 @@ public class UnionFind {
     public void connect(int v1, int v2) {
         validate(v1);
         validate(v2);
-        int fv1 = sizeOf(v1);
-        int fv2 = sizeOf(v2);
-        if (fv1 > fv2 && find(v1) != find(v2)) {
-            parent[find(v1)] -= sizeOf(fv2);
-            parent[find(v2)] = find(v1);
-        } else if (fv1 < fv2 && find(v1) != find(v2)){
-            parent[find(v1)] = find(v2);
-            parent[find(v2)] -= sizeOf(fv1);
+        if (sizeOf(v1) < sizeOf(v2)) {
+            parent[v1] = find(v2);
+        } else {
+            parent[v2] = find(v1);
         }
     }
 
@@ -64,10 +60,9 @@ public class UnionFind {
        allowing for fast search-time. */
     public int find(int v1) {
         validate(v1);
-        while (v1 != parent[v1]) {
-            parent[v1] = parent[parent[v1]];
-            v1 = parent[v1];
+        if (parent[v1] == -1) {
+            return v1;
         }
-        return v1;
+        return find(parent[v1]);
     }
 }
