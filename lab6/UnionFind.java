@@ -49,10 +49,12 @@ public class UnionFind {
     public void connect(int v1, int v2) {
         validate(v1);
         validate(v2);
-        if (sizeOf(v1) < sizeOf(v2)) {
-            parent[find(v1)] = find(v2);
-        } else {
-            parent[find(v2)] = find(v1);
+        if (isConnected(v1, v2)) {
+            if (sizeOf(v1) > sizeOf(v2)) {
+                parent[find(v2)] = find(v1);
+            } else {
+                parent[find(v1)] = find(v2);
+            }
         }
     }
 
