@@ -50,9 +50,9 @@ public class UnionFind {
         validate(v1);
         validate(v2);
         if (sizeOf(v1) < sizeOf(v2)) {
-            parent[v1] = find(v2);
+            parent[find(v1)] = find(v2);
         } else {
-            parent[v2] = find(v1);
+            parent[find(v2)] = find(v1);
         }
     }
 
