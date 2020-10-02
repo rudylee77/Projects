@@ -5,7 +5,7 @@ public class PercolationStats {
     private int T;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        if (N < 0) {
+        if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
         this.T = T;
@@ -15,7 +15,9 @@ public class PercolationStats {
             while (!(test.percolates())) {
                 int row = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
                 int col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
-                test.open(row, col);
+                if (!(test.isOpen(row, col))) {
+                    test.open(row, col);
+                }
             }
             sum[i] = (test.numberOfOpenSites()) / N;
         }

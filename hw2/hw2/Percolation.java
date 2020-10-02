@@ -67,7 +67,8 @@ public class Percolation {
             int xy = xyTo1D(row, col);
             if (row == 0) {
                 weight.union(xy, top);
-            } else if (row == N - 1) {
+            }
+            if (row == N - 1) {
                 if (weight.connected(top, xy)) {
                     weight.union(xy, range);
                 } else {
