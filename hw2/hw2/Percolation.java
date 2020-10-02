@@ -56,7 +56,7 @@ public class Percolation {
         int xy = xyTo1D(row, col);
         if (row == 0) {
             weight.union(xy, top);
-        } 
+        }
         combine(row, col);
         openSites++;
     }

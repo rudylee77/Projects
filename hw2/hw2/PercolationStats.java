@@ -14,15 +14,9 @@ public class PercolationStats {
             Percolation test = pf.make(N);
             boolean perc = true;
             while (perc) {
-                boolean add = true;
-                while (add) {
-                    int row = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
-                    int col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
-                    if (!(test.isOpen(row, col))) {
-                        test.open(row, col);
-                        add = false;
-                    }
-                }
+                int row = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
+                int col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
+                test.open(row, col);
                 if (test.percolates()) {
                     sum[i] = test.numberOfOpenSites();
                     perc = false;
