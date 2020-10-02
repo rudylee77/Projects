@@ -2,9 +2,8 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 public class Percolation {
     private boolean[][] grid;
@@ -15,7 +14,7 @@ public class Percolation {
     private WeightedQuickUnionUF weight;
 
     public Percolation(int N) {
-        if (N < 0) {
+        if (N <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
         grid = new boolean[N][N];
@@ -32,7 +31,7 @@ public class Percolation {
         return (N * r) + c;
     }
 
-    private void combine(int r, int c){
+    private void combine(int r, int c) {
         int xy = xyTo1D(r, c);
         if (r > 0 && isOpen(r - 1, c)) {
             weight.union(xy, xyTo1D(r - 1, c));

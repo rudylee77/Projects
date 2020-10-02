@@ -14,6 +14,7 @@ public class PercolationStats {
         trials = T;
         factory = pf;
         sum = new int[trials];
+        simulation();
     }
 
     private void simulation() {
@@ -40,12 +41,8 @@ public class PercolationStats {
         }
     }
 
-    public double mean() {
-        return edu.princeton.cs.algs4.StdStats.mean(sum);
-    }
-    public double stddev() {
-        return edu.princeton.cs.algs4.StdStats.stddev(sum);
-    }
+    public double mean() { return edu.princeton.cs.algs4.StdStats.mean(sum); }
+    public double stddev() { return edu.princeton.cs.algs4.StdStats.stddev(sum); }
     public double confidenceLow() {
         return mean() - ((1.96 * stddev()) / Math.sqrt(trials));
     }
