@@ -1,6 +1,6 @@
 package hw2;
 
-public class PercolationStats{
+public class PercolationStats {
     private int grid;
     private int trials;
     private int[] sum;
@@ -24,8 +24,8 @@ public class PercolationStats{
             while (perc) {
                 boolean add = true;
                 while (add) {
-                    int row = edu.princeton.cs.algs4.StdRandom.uniform(grid-1);
-                    int col = edu.princeton.cs.algs4.StdRandom.uniform(grid-1);
+                    int row = edu.princeton.cs.algs4.StdRandom.uniform(grid - 1);
+                    int col = edu.princeton.cs.algs4.StdRandom.uniform(grid - 1);
                     if (!(test.isOpen(row, col))) {
                         test.open(row, col);
                         add = false;

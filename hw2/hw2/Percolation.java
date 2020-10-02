@@ -6,70 +6,75 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Percolation extends WeightedQuickUnionUF{
+public class Percolation {
     private boolean[][] grid;
-    private List<Integer> gridNum;
+    private int top = 0;
+    private int N;
     private int range;
     private int openSites;
     private WeightedQuickUnionUF weight;
 
     public Percolation(int N) {
-        super(N*N);
         if (N < 0) {
             throw new java.lang.IllegalArgumentException();
         }
         grid = new boolean[N][N];
-        gridNum = new ArrayList<Integer>();
-        gridNum.add((N * N) + 1);
-        gridNum.add((N * N) + 2);
-        range = N;
+        this.N = N;
+        range = (N * N) + 1;
         openSites = 0;
         weight = new WeightedQuickUnionUF((N * N) + 2);
-        for (boolean[] row: grid)
+        for (boolean[] row: grid) {
             Arrays.fill(row, false);
+        }
     }
 
     private int xyTo1D(int r, int c) {
-        return (range * r) + c;
+        return (N * r) + c;
     }
 
-    private boolean connect(int a, int b) {
-        if (Math.abs((a / range) - (b / range)) == 1 && (a % range) == (b % range)) {
-            return true;
-        } else if (Math.abs((a % range) - (b % range)) == 1 && (a / range) == (b / range)) {
-            return true;
+    private void combine(int r, int c){
+        int xy = xyTo1D(r, c);
+        if (r > 0 && isOpen(r - 1, c)) {
+            weight.union(xy, xyTo1D(r - 1, c));
         }
-        return false;
+        if (c > 0 && isOpen(r, c - 1)) {
+            weight.union(xy, xyTo1D(r, c - 1));
+        }
+        if (r < N - 1 && isOpen(r + 1, c)) {
+            weight.union(xy, xyTo1D(r + 1, c));
+        }
+        if (c < N - 1 && isOpen(r, c + 1)) {
+            weight.union(xy, xyTo1D(r, c + 1));
+        }
     }
 
     public void open(int row, int col) {
-        if (row >= range || col >= range) {
+        if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        int xy = xyTo1D(row, col);
         grid[row][col] = true;
-        gridNum.add(xy);
+        int xy = xyTo1D(row, col);
         if (row == 0) {
-            weight.union(range + 1, xy);
-        } else if (row == range - 1) {
-            weight.union(range + 2, xy);
+            weight.union(xy, top);
+        } else if (row == N) {
+            weight.union(xy, range);
         }
-        for (int i = 2; i < gridNum.size(); i++) {
-            int comp = gridNum.get(i);
-            if (connect(comp, xy)) {
-                weight.union(comp, xy);
-            }
-        }
+        combine(row, col);
         openSites++;
     }
 
     public boolean isOpen(int row, int col) {
+        if (row >= N || col >= N || row < 0 || col < 0) {
+            throw new java.lang.IndexOutOfBoundsException();
+        }
         return grid[row][col];
     }
 
     public boolean isFull(int row, int col) {
-        int xy = xyTo1D(row, col);
-        return weight.connected(range + 1, xy);
+        if (row >= N || col >= N || row < 0 || col < 0) {
+            throw new java.lang.IndexOutOfBoundsException();
+        }
+        return weight.connected(top, xyTo1D(row, col));
     }
 
     public int numberOfOpenSites() {
@@ -77,7 +82,7 @@ public class Percolation extends WeightedQuickUnionUF{
     }
 
     public boolean percolates() {
-        return weight.connected(range + 1, range + 2);
+        return weight.connected(top, range);
     }
 
     public static void main(String[] args) {
