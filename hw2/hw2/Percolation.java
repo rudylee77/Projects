@@ -2,8 +2,7 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.Arrays;
-
+import java.util.*;
 
 public class Percolation {
     private boolean[][] grid;
@@ -11,6 +10,7 @@ public class Percolation {
     private int N;
     private int range;
     private int openSites;
+    private List<Integer> lastrow;
     private WeightedQuickUnionUF weight;
 
     public Percolation(int N) {
@@ -26,6 +26,8 @@ public class Percolation {
         for (boolean[] row: grid) {
             Arrays.fill(row, false);
         }
+        lastrow = new ArrayList<>();
+
     }
 
     private int xyTo1D(int r, int c) {
@@ -46,17 +48,32 @@ public class Percolation {
         if (c < N - 1 && isOpen(r, c + 1)) {
             weight.union(xy, xyTo1D(r, c + 1));
         }
+        if (lastrow.size() > 0) {
+            for (int i = 0; i < lastrow.size(); i++) {
+                if (weight.connected(top, lastrow.get(i))) {
+                    weight.union(lastrow.get(i), range);
+                    lastrow.remove(i);
+                }
+            }
+        }
     }
 
     public void open(int row, int col) {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        if (!(grid[row][col] == true)) {
+        if (grid[row][col] == false) {
             grid[row][col] = true;
             int xy = xyTo1D(row, col);
             if (row == 0) {
                 weight.union(xy, top);
+            } else if (row == N - 1) {
+                int last = xyTo1D(row, col);
+                if (weight.connected(top, xyTo1D(row - 1, col))) {
+                    weight.union(xy, range);
+                } else {
+                    lastrow.add(last);
+                }
             }
             combine(row, col);
             openSites++;
@@ -82,12 +99,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        for (int i = 0; i < N; i++) {
-            int xy = xyTo1D(N - 1, i);
-            if (weight.connected(xy, top)) {
-                weight.union(xy, range);
-            }
-        }
         return weight.connected(top, range);
     }
 
