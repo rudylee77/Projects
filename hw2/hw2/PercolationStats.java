@@ -1,7 +1,7 @@
 package hw2;
 
 public class PercolationStats {
-    private int[] sum;
+    private double[] sum;
     private int T;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -9,19 +9,15 @@ public class PercolationStats {
             throw new java.lang.IllegalArgumentException();
         }
         this.T = T;
-        sum = new int[T];
+        sum = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation test = pf.make(N);
-            boolean perc = true;
-            while (perc) {
+            while (!(test.percolates())) {
                 int row = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
                 int col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
                 test.open(row, col);
-                if (test.percolates()) {
-                    sum[i] = (test.numberOfOpenSites()) / N;
-                    perc = false;
-                }
             }
+            sum[i] = (test.numberOfOpenSites()) / N;
         }
     }
 
