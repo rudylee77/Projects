@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Percolation {
     private boolean[][] grid;
-    private int top = 0;
+    private int top;
     private int N;
     private int range;
     private int openSites;
@@ -18,10 +18,11 @@ public class Percolation {
             throw new java.lang.IllegalArgumentException();
         }
         grid = new boolean[N][N];
+        top = (N * N) + 1;
         this.N = N;
-        range = (N * N);
+        range = (N * N) + 2;
         openSites = 0;
-        weight = new WeightedQuickUnionUF((N * N) + 1);
+        weight = new WeightedQuickUnionUF((N * N) + 3);
         for (boolean[] row: grid) {
             Arrays.fill(row, false);
         }
@@ -47,13 +48,6 @@ public class Percolation {
         }
     }
 
-    private boolean backwash(int c) {
-        if (isFull(N - 2, c)) {
-            return true;
-        }
-        return false;
-    }
-
     public void open(int row, int col) {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
@@ -62,11 +56,7 @@ public class Percolation {
         int xy = xyTo1D(row, col);
         if (row == 0) {
             weight.union(xy, top);
-        } else if (row == N - 1) {
-            if (backwash(col)) {
-                weight.union(xy, range);
-            }
-        }
+        } 
         combine(row, col);
         openSites++;
     }
@@ -81,8 +71,6 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
-        } else if (openSites == 0) {
-            return false;
         }
         return weight.connected(top, xyTo1D(row, col));
     }
@@ -92,6 +80,12 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        for (int i = 0; i < N; i++) {
+            int xy = xyTo1D(N - 1, i);
+            if (weight.connected(xy, top)) {
+                weight.union(xy, range);
+            }
+        }
         return weight.connected(top, range);
     }
 
