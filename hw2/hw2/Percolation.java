@@ -18,11 +18,11 @@ public class Percolation {
             throw new java.lang.IllegalArgumentException();
         }
         grid = new boolean[N][N];
-        top = (N * N) + 1;
+        top = (N * N);
         this.N = N;
-        range = (N * N) + 2;
+        range = (N * N) + 1;
         openSites = 0;
-        weight = new WeightedQuickUnionUF((N * N) + 3);
+        weight = new WeightedQuickUnionUF((N * N) + 2);
         for (boolean[] row: grid) {
             Arrays.fill(row, false);
         }
@@ -52,13 +52,15 @@ public class Percolation {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        grid[row][col] = true;
-        int xy = xyTo1D(row, col);
-        if (row == 0) {
-            weight.union(xy, top);
+        if (!(grid[row][col] == true)) {
+            grid[row][col] = true;
+            int xy = xyTo1D(row, col);
+            if (row == 0) {
+                weight.union(xy, top);
+            }
+            combine(row, col);
+            openSites++;
         }
-        combine(row, col);
-        openSites++;
     }
 
     public boolean isOpen(int row, int col) {

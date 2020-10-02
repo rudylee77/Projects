@@ -18,7 +18,7 @@ public class PercolationStats {
                 int col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
                 test.open(row, col);
                 if (test.percolates()) {
-                    sum[i] = test.numberOfOpenSites();
+                    sum[i] = (test.numberOfOpenSites()) / N;
                     perc = false;
                 }
             }
