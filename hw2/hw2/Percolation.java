@@ -10,8 +10,8 @@ public class Percolation {
     private int N;
     private int range;
     private int openSites;
-    private List<Integer> lastrow;
     private WeightedQuickUnionUF weight;
+    private WeightedQuickUnionUF weight2;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -22,11 +22,11 @@ public class Percolation {
         this.N = N;
         range = (N * N) + 1;
         openSites = 0;
-        weight = new WeightedQuickUnionUF((N * N) + 3);
+        weight = new WeightedQuickUnionUF((N * N) + 2);
+        weight2 = new WeightedQuickUnionUF((N * N) + 1);
         for (boolean[] row: grid) {
             Arrays.fill(row, false);
         }
-        lastrow = new ArrayList<>();
     }
 
     private int xyTo1D(int r, int c) {
@@ -36,25 +36,24 @@ public class Percolation {
     private void combine(int r, int c) {
         int xy = xyTo1D(r, c);
         if (r > 0 && isOpen(r - 1, c)) {
-            weight.union(xy, xyTo1D(r - 1, c));
+            int comp = xyTo1D(r - 1, c);
+            weight.union(xy, comp);
+            weight2.union(xy, comp);
         }
         if (c > 0 && isOpen(r, c - 1)) {
-            weight.union(xy, xyTo1D(r, c - 1));
+            int comp2 = xyTo1D(r, c - 1);
+            weight.union(xy, comp2);
+            weight2.union(xy, comp2);
         }
         if (r < N - 1 && isOpen(r + 1, c)) {
-            weight.union(xy, xyTo1D(r + 1, c));
+            int comp3 = xyTo1D(r + 1, c);
+            weight.union(xy, comp3);
+            weight2.union(xy, comp3);
         }
         if (c < N - 1 && isOpen(r, c + 1)) {
-            weight.union(xy, xyTo1D(r, c + 1));
-        }
-        if (weight.connected(xy, top) && lastrow.size() > 0) {
-            for (int i = 0; i < lastrow.size(); i++) {
-                int last = lastrow.get(i);
-                if (weight.connected(top, last)) {
-                    weight.union(last, range);
-                    lastrow.remove(i);
-                }
-            }
+            int comp4 = xyTo1D(r, c + 1);
+            weight.union(xy, comp4);
+            weight2.union(xy, comp4);
         }
     }
 
@@ -67,13 +66,10 @@ public class Percolation {
             int xy = xyTo1D(row, col);
             if (row == 0) {
                 weight.union(xy, top);
+                weight2.union(xy, top);
             }
             if (row == N - 1) {
-                if (weight.connected(top, xy)) {
-                    weight.union(xy, range);
-                } else {
-                    lastrow.add(xy);
-                }
+                weight.union(xy, range);
             }
             combine(row, col);
             openSites++;
@@ -91,7 +87,7 @@ public class Percolation {
         if (row >= N || col >= N || row < 0 || col < 0) {
             throw new java.lang.IndexOutOfBoundsException();
         }
-        return weight.connected(top, xyTo1D(row, col));
+        return weight.connected(top, xyTo1D(row, col)) && weight2.connected(top, xyTo1D(row, col));
     }
 
     public int numberOfOpenSites() {
