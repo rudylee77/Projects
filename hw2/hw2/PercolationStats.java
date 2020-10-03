@@ -16,6 +16,7 @@ public class PercolationStats {
         sum = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation test = pf.make(N);
+            int count = 0;
             while (!(test.percolates())) {
                 boolean isOpen = true;
                 int row = 0;
@@ -26,8 +27,9 @@ public class PercolationStats {
                     isOpen = test.isOpen(row, col);
                 }
                 test.open(row, col);
+                count++;
             }
-            sum[i] = (test.numberOfOpenSites()) / (N * N);
+            sum[i] = count / (N * N);
         }
         mean = edu.princeton.cs.algs4.StdStats.mean(sum);
         stddev = edu.princeton.cs.algs4.StdStats.stddev(sum);
