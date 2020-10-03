@@ -33,7 +33,7 @@ public class PercolationStats {
         return edu.princeton.cs.algs4.StdStats.mean(sum) / num;
     }
     public double stddev() {
-        return edu.princeton.cs.algs4.StdStats.stddev(sum) / (num * num);
+        return edu.princeton.cs.algs4.StdStats.stddev(sum) / num;
     }
     public double confidenceLow() {
         return mean() - ((1.96 * stddev()) / Math.sqrt(T));
