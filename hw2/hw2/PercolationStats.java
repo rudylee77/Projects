@@ -17,13 +17,13 @@ public class PercolationStats {
                 int row = 0;
                 int col = 0;
                 while (isOpen) {
-                    row = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
-                    col = edu.princeton.cs.algs4.StdRandom.uniform(N - 1);
+                    row = edu.princeton.cs.algs4.StdRandom.uniform(N);
+                    col = edu.princeton.cs.algs4.StdRandom.uniform(N);
                     isOpen = test.isOpen(row, col);
                 }
                 test.open(row, col);
             }
-            sum[i] = (test.numberOfOpenSites()) / N;
+            sum[i] = (test.numberOfOpenSites()) / (N * N);
         }
     }
 
