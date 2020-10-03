@@ -1,15 +1,17 @@
 package hw2;
 
 public class PercolationStats {
-    private double[] sum;
+    private int[] sum;
     private int T;
+    private int num;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
         this.T = T;
-        sum = new double[T];
+        num = N * N;
+        sum = new int[T];
         for (int i = 0; i < T; i++) {
             Percolation test = pf.make(N);
             while (!(test.percolates())) {
@@ -23,15 +25,15 @@ public class PercolationStats {
                 }
                 test.open(row, col);
             }
-            sum[i] = (double) (test.numberOfOpenSites() / (N * N));
+            sum[i] = test.numberOfOpenSites();
         }
     }
 
     public double mean() {
-        return edu.princeton.cs.algs4.StdStats.mean(sum);
+        return edu.princeton.cs.algs4.StdStats.mean(sum) / num;
     }
     public double stddev() {
-        return edu.princeton.cs.algs4.StdStats.stddev(sum);
+        return edu.princeton.cs.algs4.StdStats.stddev(sum) / (num * num);
     }
     public double confidenceLow() {
         return mean() - ((1.96 * stddev()) / Math.sqrt(T));
