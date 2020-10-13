@@ -103,7 +103,7 @@ public class KDTree {
             }
         } else {
             if (distance > Math.abs(n.y - goal.getY())) {
-                    best = nearest(badSide, goal, best);
+                best = nearest(badSide, goal, best);
             }
         }
         return best;
