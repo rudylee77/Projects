@@ -44,7 +44,7 @@ public class KDTree {
                 if (root.right == null) {
                     root.right = new KDNode(!xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp, root.left.xOry);
+                    KDNodeHelper(root.right, cmp, root.right.xOry);
                 }
             }
         } else {
@@ -58,7 +58,7 @@ public class KDTree {
                 if (root.right == null) {
                     root.right = new KDNode(!xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp, root.left.xOry);
+                    KDNodeHelper(root.right, cmp, root.right.xOry);
                 }
             }
         }
