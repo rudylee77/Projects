@@ -28,23 +28,23 @@ public class KDTree {
         Point first = points.get(0);
         root = new KDNode(true, first);
         for (int i = 1; i < points.size(); i++) {
-            KdNodeHelper(root, points.get(i));
+            nodeHelper(root, points.get(i));
         }
     }
 
-    private void KdNodeHelper(KDNode og, Point cmp) {
+    private void nodeHelper(KDNode og, Point cmp) {
         if (og.xOry) {
             if (og.parent.getX() > cmp.getX()) {
                 if (og.left == null) {
                     og.left = new KDNode(!og.xOry, cmp);
                 } else {
-                    KdNodeHelper(og.left, cmp);
+                    nodeHelper(og.left, cmp);
                 }
             } else {
                 if (og.right == null) {
                     og.right = new KDNode(!og.xOry, cmp);
                 } else {
-                    KdNodeHelper(og.right, cmp);
+                    nodeHelper(og.right, cmp);
                 }
             }
         } else {
@@ -52,13 +52,13 @@ public class KDTree {
                 if (og.left == null) {
                     og.left = new KDNode(!og.xOry, cmp);
                 } else {
-                    KdNodeHelper(og.left, cmp);
+                    nodeHelper(og.left, cmp);
                 }
             } else {
                 if (og.right == null) {
                     og.right = new KDNode(!og.xOry, cmp);
                 } else {
-                    KdNodeHelper(og.right, cmp);
+                    nodeHelper(og.right, cmp);
                 }
             }
         }
