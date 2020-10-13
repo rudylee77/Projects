@@ -97,15 +97,13 @@ public class KDTree {
             }
         }
         best = nearest(goodSide, goal, best);
-        if (badSide != null) {
-            if (n.xOry) {
-                if (distance > Math.abs(n.x - goal.getX())) {
+        if (n.xOry) {
+            if (distance > Math.abs(n.x - goal.getX())) {
+                best = nearest(badSide, goal, best);
+            }
+        } else {
+            if (distance > Math.abs(n.y - goal.getY())) {
                     best = nearest(badSide, goal, best);
-                }
-            } else {
-                if (distance > Math.abs(n.y - goal.getY())) {
-                    best = nearest(badSide, goal, best);
-                }
             }
         }
         return best;
