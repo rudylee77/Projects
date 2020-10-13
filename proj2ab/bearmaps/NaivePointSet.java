@@ -20,7 +20,7 @@ public class NaivePointSet implements PointSet {
             double cmp = distance(next.getX(), next.getY(), x, y);
             if (distance > cmp) {
                 nearest = next;
-                distance  = cmp;
+                distance = cmp;
             }
         }
         return nearest;

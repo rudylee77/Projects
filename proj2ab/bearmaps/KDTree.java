@@ -28,37 +28,37 @@ public class KDTree {
         Point first = points.get(0);
         root = new KDNode(true, first);
         for (int i = 1; i < points.size(); i++) {
-            KDNodeHelper(root, points.get(i), root.xOry);
+            KDNodeHelper(root, points.get(i));
         }
     }
 
-    private void KDNodeHelper(KDNode root, Point cmp, boolean xOry) {
-        if (xOry) {
+    private void KDNodeHelper(KDNode root, Point cmp) {
+        if (root.xOry) {
             if (root.parent.getX() > cmp.getX()) {
                 if (root.left == null) {
-                    root.left = new KDNode(!xOry, cmp);
+                    root.left = new KDNode(!root.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.left, cmp, root.left.xOry);
+                    KDNodeHelper(root.left, cmp);
                 }
             } else {
                 if (root.right == null) {
-                    root.right = new KDNode(!xOry, cmp);
+                    root.right = new KDNode(!root.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp, root.right.xOry);
+                    KDNodeHelper(root.right, cmp);
                 }
             }
         } else {
             if (root.parent.getY() > cmp.getY()) {
                 if (root.left == null) {
-                    root.left = new KDNode(!xOry, cmp);
+                    root.left = new KDNode(!root.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.left, cmp, root.left.xOry);
+                    KDNodeHelper(root.left, cmp);
                 }
             } else {
                 if (root.right == null) {
-                    root.right = new KDNode(!xOry, cmp);
+                    root.right = new KDNode(!root.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp, root.right.xOry);
+                    KDNodeHelper(root.right, cmp);
                 }
             }
         }
@@ -71,11 +71,13 @@ public class KDTree {
     private KDNode nearest(KDNode n, Point goal, KDNode best) {
         KDNode goodSide = null;
         KDNode badSide = null;
+        double distance = distance(best.x, best.y, goal.getX(), goal.getY());
         if (n == null) {
             return best;
         }
-        if (distance(n.x, n.y, goal.getX(), goal.getY()) < distance(best.x, best.y, goal.getX(), goal.getY())) {
+        if (distance(n.x, n.y, goal.getX(), goal.getY()) < distance) {
             best = n;
+            distance = distance(n.x, n.y, goal.getX(), goal.getY());
         }
         if (n.xOry) {
             if (goal.getX() < n.parent.getX()) {
@@ -95,13 +97,15 @@ public class KDTree {
             }
         }
         best = nearest(goodSide, goal, best);
-        if (badSide != null && badSide.xOry) {
-            if (Math.abs(best.x - goal.getX()) > Math.abs(n.x - goal.getX())) {
-                best = nearest(badSide, goal, best);
-            }
-        } else if (badSide != null && !badSide.xOry) {
-            if (Math.abs(best.y - goal.getY()) > Math.abs(n.y - goal.getY())) {
-                best = nearest(badSide, goal, best);
+        if (badSide != null) {
+            if (n.xOry) {
+                if (distance > Math.abs(n.x - goal.getX())) {
+                    best = nearest(badSide, goal, best);
+                }
+            } else {
+                if (distance > Math.abs(n.y - goal.getY())) {
+                    best = nearest(badSide, goal, best);
+                }
             }
         }
         return best;
