@@ -10,7 +10,7 @@ public class KDTree {
         private KDNode left;
         private KDNode right;
 
-        public KDNode(boolean xOry, Point parent) {
+        private KDNode(boolean xOry, Point parent) {
             this.x = parent.getX();
             this.y = parent.getY();
             this.xOry = xOry;
@@ -28,37 +28,37 @@ public class KDTree {
         Point first = points.get(0);
         root = new KDNode(true, first);
         for (int i = 1; i < points.size(); i++) {
-            KDNodeHelper(root, points.get(i));
+            KdNodeHelper(root, points.get(i));
         }
     }
 
-    private void KDNodeHelper(KDNode root, Point cmp) {
-        if (root.xOry) {
-            if (root.parent.getX() > cmp.getX()) {
-                if (root.left == null) {
-                    root.left = new KDNode(!root.xOry, cmp);
+    private void KdNodeHelper(KDNode og, Point cmp) {
+        if (og.xOry) {
+            if (og.parent.getX() > cmp.getX()) {
+                if (og.left == null) {
+                    og.left = new KDNode(!og.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.left, cmp);
+                    KdNodeHelper(og.left, cmp);
                 }
             } else {
-                if (root.right == null) {
-                    root.right = new KDNode(!root.xOry, cmp);
+                if (og.right == null) {
+                    og.right = new KDNode(!og.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp);
+                    KdNodeHelper(og.right, cmp);
                 }
             }
         } else {
-            if (root.parent.getY() > cmp.getY()) {
-                if (root.left == null) {
-                    root.left = new KDNode(!root.xOry, cmp);
+            if (og.parent.getY() > cmp.getY()) {
+                if (og.left == null) {
+                    og.left = new KDNode(!og.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.left, cmp);
+                    KdNodeHelper(og.left, cmp);
                 }
             } else {
-                if (root.right == null) {
-                    root.right = new KDNode(!root.xOry, cmp);
+                if (og.right == null) {
+                    og.right = new KDNode(!og.xOry, cmp);
                 } else {
-                    KDNodeHelper(root.right, cmp);
+                    KdNodeHelper(og.right, cmp);
                 }
             }
         }
