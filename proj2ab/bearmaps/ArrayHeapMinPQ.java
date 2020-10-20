@@ -59,14 +59,17 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public void add(T item, double priority) {
         heap.add(new PriorityNode(item, priority));
-        swimUp(heap.size() - 1);
+        swimUp(size());
         map.put(item, size());
     }
 
     private void swap(int index1, int index2) {
-        PriorityNode replace = heap.get(index1);
-        heap.set(index1, heap.get(index2));
-        heap.set(index2, replace);
+        PriorityNode replace1 = heap.get(index1);
+        PriorityNode replace2 = heap.get(index2);
+        map.put(replace1.getItem(), index2);
+        map.put(replace2.getItem(), index1);
+        heap.set(index1, replace2);
+        heap.set(index2, replace1);
     }
 
     private void swimUp(int index) {
@@ -122,8 +125,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public T removeSmallest() {
         T smallest = getSmallest();
-        heap.set(1, heap.get(heap.size() - 1));
-        heap.remove(heap.size() - 1);
+        heap.set(1, heap.get(size()));
+        heap.remove(size());
         map.remove(smallest);
         swimDown(1);
         return smallest;
@@ -137,7 +140,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         int index = map.get(item);
-        heap.get(index).setPriority(priority);
-        swimUp(index);
+        PriorityNode replace = heap.get(index);
+        double oldPriority = replace.getPriority();
+        replace.setPriority(priority);
+        if (oldPriority > priority) {
+            swimUp(index);
+        } else {
+            swimDown(index);
+        }
     }
 }
