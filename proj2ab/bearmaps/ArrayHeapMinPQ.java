@@ -66,10 +66,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private void swap(int index1, int index2) {
         PriorityNode replace1 = heap.get(index1);
         PriorityNode replace2 = heap.get(index2);
-        map.put(replace1.getItem(), index2);
-        map.put(replace2.getItem(), index1);
         heap.set(index1, replace2);
         heap.set(index2, replace1);
+        map.put(replace1.getItem(), index2);
+        map.put(replace2.getItem(), index1);
     }
 
     private void swimUp(int index) {
