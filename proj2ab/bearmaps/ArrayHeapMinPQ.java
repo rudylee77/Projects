@@ -1,10 +1,13 @@
 package bearmaps;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private ArrayList<PriorityNode> heap;
+    private HashMap<T, Integer> map = new HashMap<>();
 
+    /*@Source NaiveMinPQ.java class*/
     private class PriorityNode implements Comparable<PriorityNode> {
         private T item;
         private double priority;
@@ -57,6 +60,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     public void add(T item, double priority) {
         heap.add(new PriorityNode(item, priority));
         swimUp(heap.size() - 1);
+        map.put(item, size());
     }
 
     private void swap(int index1, int index2) {
@@ -107,7 +111,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public boolean contains(T item) {
-        return heap.contains(new PriorityNode(item, 0));
+        return map.containsKey(item);
     }
 
     @Override
@@ -120,6 +124,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         T smallest = getSmallest();
         heap.set(1, heap.get(heap.size() - 1));
         heap.remove(heap.size() - 1);
+        map.remove(smallest);
         swimDown(1);
         return smallest;
     }
@@ -131,7 +136,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public void changePriority(T item, double priority) {
-        int index = indOf(item);
+        int index = map.get(item);
         heap.get(index).setPriority(priority);
         swimUp(index);
     }

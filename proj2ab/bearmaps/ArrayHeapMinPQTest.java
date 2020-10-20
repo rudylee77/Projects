@@ -67,29 +67,31 @@ public class ArrayHeapMinPQTest {
         ArrayHeapMinPQ<Integer> intHeap = new ArrayHeapMinPQ<>();
         NaiveMinPQ<Integer> naiveMinPQ = new NaiveMinPQ<>();
 
+
         long start1 = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
-            intHeap.add(i,1000000-i);
+        for (int i = 0; i < 10000; i++) {
+            intHeap.add(i,10000-i);
         }
         long end1 = System.currentTimeMillis();
         System.out.println("ArrayHeap add time:" + (end1 - start1) + "ms.");
 
         long start2 = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
-            naiveMinPQ.add(i,1000000-i);
+        for (int i = 0; i < 10000; i++) {
+            naiveMinPQ.add(i,10000-i);
         }
         long end2 = System.currentTimeMillis();
         System.out.println("NaiveMinPQ add time:" + (end2 - start2) + "ms.");
 
+
         long start3 = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10000; i++) {
             intHeap.contains(i);
         }
         long end3 = System.currentTimeMillis();
         System.out.println("ArrayHeap contain time:" + (end3 - start3) + "ms.");
 
         long start4 = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10000; i++) {
             naiveMinPQ.contains(i);
         }
         long end4 = System.currentTimeMillis();
@@ -97,33 +99,48 @@ public class ArrayHeapMinPQTest {
 
 
         long start5 = System.currentTimeMillis();
-        for (int i = 0; i < 20000; i += 1) {
-            intHeap.changePriority(i,i+20000);
+        for (int i = 0; i < 10000; i++) {
+            intHeap.changePriority(i, i+10);;
         }
         long end5 = System.currentTimeMillis();
-        System.out.println("After 20000 changePriority, ArrayHeapMinPQ time spends: " + (end5 - start5) + "ms.");
+        System.out.println("ArrayHeap changePriority time:" + (end5 - start5) + "ms.");
 
         long start6 = System.currentTimeMillis();
-        for (int i = 0; i < 20000; i += 1) {
-            naiveMinPQ.changePriority(i,i+20000);
+        for (int i = 0; i < 10000; i++) {
+            naiveMinPQ.changePriority(i, i+10);;
         }
         long end6 = System.currentTimeMillis();
-        System.out.println("After 20000 changePriority, NaiveMinPQ time spends: " + (end6 - start6) + "ms.");
+        System.out.println("NaiveMinPQ changePriority time:" + (end6 - start6) + "ms.");
 
 
         long start7 = System.currentTimeMillis();
-        for (int i = 0; i < 20000; i += 1) {
-            intHeap.removeSmallest();
+        for (int i = 0; i < 10000; i++) {
+            intHeap.getSmallest();;
         }
         long end7 = System.currentTimeMillis();
-        System.out.println("After 20000 removeSmallest, ArrayHeapMinPQ time spends: " + (end7 - start7) + "ms.");
+        System.out.println("ArrayHeap get time:" + (end7 - start7) + "ms.");
 
         long start8 = System.currentTimeMillis();
-        for (int i = 0; i < 20000; i += 1) {
-            naiveMinPQ.removeSmallest();
+        for (int i = 0; i < 10000; i++) {
+            naiveMinPQ.getSmallest();;
         }
         long end8 = System.currentTimeMillis();
-        System.out.println("After 20000 removeSmallest, NaiveMinPQ time spends: " + (end8 - start8) + "ms.");
+        System.out.println("NaiveMinPQ get time:" + (end8 - start8) + "ms.");
+
+
+        long start9 = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            intHeap.removeSmallest();
+        }
+        long end9 = System.currentTimeMillis();
+        System.out.println("ArrayHeap remove time:" + (end9 - start9) + "ms.");
+
+        long start10 = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            naiveMinPQ.removeSmallest();;
+        }
+        long end10 = System.currentTimeMillis();
+        System.out.println("NaiveMinPQ remove time:" + (end10 - start10) + "ms.");
     }
 
     public static void main(String[] args) {
