@@ -140,8 +140,4 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         heap.get(index).setPriority(priority);
         swimUp(index);
     }
-
-    private int indOf(T item) {
-        return heap.indexOf(new PriorityNode(item, 0));
-    }
 }
