@@ -20,31 +20,11 @@ import java.util.Map;
 import static bearmaps.proj2d.utils.Constants.SEMANTIC_STREET_GRAPH;
 import static bearmaps.proj2d.utils.Constants.ROUTE_LIST;
 
-/**
- * Handles requests from the web browser for map images. These images
- * will be rastered into one large image to be displayed to the user.
- * @author rahul, Josh Hug, _________
- */
 public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<String, Object>> {
-
-    /**
-     * Each raster request to the server will have the following parameters
-     * as keys in the params map accessible by,
-     * i.e., params.get("ullat") inside RasterAPIHandler.processRequest(). <br>
-     * ullat : upper left corner latitude, <br> ullon : upper left corner longitude, <br>
-     * lrlat : lower right corner latitude,<br> lrlon : lower right corner longitude <br>
-     * w : user viewport window width in pixels,<br> h : user viewport height in pixels.
-     **/
     private static final String[] REQUIRED_RASTER_REQUEST_PARAMS = {"ullat", "ullon", "lrlat",
             "lrlon", "w", "h"};
-
-    /**
-     * The result of rastering must be a map containing all of the
-     * fields listed in the comments for RasterAPIHandler.processRequest.
-     **/
     private static final String[] REQUIRED_RASTER_RESULT_PARAMS = {"render_grid", "raster_ul_lon",
             "raster_ul_lat", "raster_lr_lon", "raster_lr_lat", "depth", "query_success"};
-
 
     @Override
     protected Map<String, Double> parseRequestParams(Request request) {
@@ -84,11 +64,64 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+        double left = requestParams.get("ullon");
+        double right = requestParams.get("lrlon");
+        double up = requestParams.get("ullat");
+        double down = requestParams.get("lrlat");
+        if (left < Constants.ROOT_LRLON && right > Constants.ROOT_ULLON && up > Constants.ROOT_LRLAT && down < Constants.ROOT_ULLAT) {
+            double lonDPP = (right - left)/requestParams.get("w");
+            int depth = 7;
+            for (int i = 0 ; i < depth; i++) {
+                double tileDepth = Math.abs(Constants.ROOT_LRLON - Constants.ROOT_ULLON) / (Math.pow(2, i) * Constants.TILE_SIZE);
+                if (tileDepth < lonDPP) {
+                    depth = i;
+                    break;
+                }
+            }
+            double numLon = Math.abs(((Constants.ROOT_LRLON - Constants.ROOT_ULLON) / Math.pow(2, depth)));
+            double numLat = Math.abs(((Constants.ROOT_LRLAT - Constants.ROOT_ULLAT) / Math.pow(2, depth)));
+            boolean leftBool = true, rightBool = true, upBool = true, downBool = true;
+            int startLon = 0, endLon = 0, startLat = 0, endLat = 0;
+            for (int i = 1; i < Math.pow(2, depth) + 1; i++) {
+                if ((i * numLon) + Constants.ROOT_ULLON >= left && leftBool) {
+                    leftBool = false;
+                    startLon = i - 1;
+                }
+                if ((i * numLon) + Constants.ROOT_ULLON >= right && rightBool) {
+                    rightBool = false;
+                    endLon = i - 1;
+                }
+                if (Constants.ROOT_ULLAT - (i * numLat) <= up && upBool) {
+                    upBool = false;
+                    startLat = i - 1;
+                }
+                if (Constants.ROOT_ULLAT - (i * numLat) <= down && downBool) {
+                    downBool = false;
+                    endLat = i - 1;
+                }
+            }
+            String[][] renderGrid = new String[endLat - startLat + 1][endLon - startLon + 1];
+            int dummyLon = startLon;
+            int dummyLat = startLat;
+            for (int i = 0; i < endLat - startLat + 1 ; i++) {
+                for (int j = 0; j <endLon - startLon + 1; j++) {
+                    renderGrid[i][j] = "d" + depth + "_x" + dummyLon + "_y" + dummyLat + ".png";
+                    dummyLon++;
+                }
+                dummyLon = startLon;
+                dummyLat++;
+            }
+            results.put("query_success", true);
+            results.put("depth", depth);
+            results.put("raster_ul_lon", (startLon * numLon) + Constants.ROOT_ULLON);
+            results.put("raster_lr_lon", ((endLon + 1) * numLon) + Constants.ROOT_ULLON);
+            results.put("raster_ul_lat", Constants.ROOT_ULLAT - (startLat * numLat));
+            results.put("raster_lr_lat", Constants.ROOT_ULLAT - ((endLat + 1) * numLat));
+            results.put("render_grid", renderGrid);
+        } else {
+            results = queryFail();
+        }
         return results;
     }
 
