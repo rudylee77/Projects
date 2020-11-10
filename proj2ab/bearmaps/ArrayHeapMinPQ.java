@@ -59,8 +59,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public void add(T item, double priority) {
         heap.add(new PriorityNode(item, priority));
-        swimUp(size());
         map.put(item, size());
+        swimUp(size());
     }
 
     private void swap(int index1, int index2) {

@@ -57,9 +57,10 @@ public class ArrayHeapMinPQTest {
         stringHeap.add("c", 0.3);
         stringHeap.add("e", 0.5);
         stringHeap.changePriority("f", 0.0);
+        stringHeap.changePriority("a", 0.7);
         assertEquals("f", stringHeap.getSmallest());
         stringHeap.removeSmallest();
-        assertEquals("a", stringHeap.getSmallest());
+        assertEquals("b", stringHeap.getSmallest());
     }
 
     @Test

@@ -2,10 +2,14 @@ package bearmaps.proj2d;
 
 import bearmaps.proj2c.streetmap.StreetMapGraph;
 import bearmaps.proj2c.streetmap.Node;
+import bearmaps.proj2ab.Point;
+import bearmaps.proj2ab.KDTree;
 
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * An augmented graph that is more powerful that a standard StreetMapGraph.
@@ -15,13 +19,25 @@ import java.util.LinkedList;
  * @author Alan Yao, Josh Hug, ________
  */
 public class AugmentedStreetMapGraph extends StreetMapGraph {
+    private HashMap<Point, Long> nodeMap;
+    private List<Point> streets;
+    private KDTree tree;
 
     public AugmentedStreetMapGraph(String dbPath) {
         super(dbPath);
-        // You might find it helpful to uncomment the line below:
-        // List<Node> nodes = this.getNodes();
+        List<Node> nodes = this.getNodes();
+        nodeMap = new HashMap<>(nodes.size());
+        streets = new ArrayList<>(nodes.size());
+        for (Node n : nodes) {
+            Long id = n.id();
+            Point point = new Point(n.lon(), n.lat());
+            nodeMap.put(point, id);
+            if (neighbors(id).size() > 0) {
+                streets.add(point);
+            }
+        }
+        tree = new KDTree(streets);
     }
-
 
     /**
      * For Project Part II
@@ -31,7 +47,7 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * @return The id of the node in the graph closest to the target.
      */
     public long closest(double lon, double lat) {
-        return 0;
+        return nodeMap.get(tree.nearest(lon, lat));
     }
 
 
